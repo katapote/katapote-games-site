@@ -1,0 +1,46 @@
+---
+import type { Locale } from '../config/types';
+import { featuredGame, otherGames } from '../config/games';
+import { useT } from '../i18n/ui';
+import Base from '../layouts/Base.astro';
+import Hero from './Hero.astro';
+import Features from './Features.astro';
+import Works from './Works.astro';
+import About from './About.astro';
+
+interface Props {
+  locale: Locale;
+}
+const { locale } = Astro.props;
+const t = useT(locale);
+const testFlight = featuredGame.testFlight?.url ? featuredGame.testFlight : null;
+---
+
+<Base locale={locale} path="/" autoLanguage={locale === 'en'}>
+  <Hero game={featuredGame} locale={locale} />
+  <Features features={featuredGame.features ?? []} locale={locale} />
+  {
+    testFlight && (
+      <div class="container repeat-cta">
+        <a class="btn btn--primary" href={testFlight.url} target="_blank" rel="noopener" data-track={testFlight.event} data-track-location="features">
+          {t('cta.playtest')}
+          <span class="sr-only">{t('newTab')}</span>
+        </a>
+      </div>
+    )
+  }
+  <Works games={otherGames} locale={locale} />
+  <About locale={locale} />
+</Base>
+
+<style>
+  .repeat-cta {
+    display: flex;
+    justify-content: center;
+    padding-bottom: 1rem;
+  }
+  .repeat-cta .btn {
+    width: 100%;
+    max-width: 360px;
+  }
+</style>

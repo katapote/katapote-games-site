@@ -1,0 +1,150 @@
+---
+/**
+ * Privacy Policy for the website only (each app has its own policy).
+ * Sections about analytics are rendered only for services actually enabled
+ * via environment variables, so the text always matches what runs.
+ */
+import type { Locale } from '../config/types';
+import { activeSocials, site } from '../config/site';
+import { analyticsInUse as a } from '../config/analytics';
+import { useT } from '../i18n/ui';
+import Base from '../layouts/Base.astro';
+
+interface Props {
+  locale: Locale;
+}
+const { locale } = Astro.props;
+const t = useT(locale);
+const ja = locale === 'ja';
+const x = activeSocials.find((s) => s.id === 'x');
+const anyAnalytics = a.cloudflare || a.plausible || a.zaraz || a.ga4;
+const updated = '2026-11-01';
+---
+
+<Base locale={locale} path="/privacy/" title={t('footer.privacy')}>
+  <section class="section">
+    <article class="container prose">
+      <h1>{t('footer.privacy')}</h1>
+      {
+        ja ? (
+          <>
+            <p>
+              本ポリシーは、{site.name}（運営：かたぽて。以下「当サイト」）のWebサイトにおける情報の取り扱いを説明するものです。各アプリ・ゲームにおける情報の取り扱いは、それぞれのApp Storeページに掲載されたプライバシーポリシーをご確認ください。
+            </p>
+
+            <h2>1. 当サイトが取得しない情報</h2>
+            <p>当サイトには、会員登録・ログイン・入力フォームはありません。氏名・メールアドレスなど、個人を直接特定できる情報を取得することはありません。</p>
+
+            <h2>2. ホスティング</h2>
+            <p>
+              当サイトはCloudflare Pages（Cloudflare, Inc.）で配信しています。配信と安全確保のため、Cloudflareはアクセス元IPアドレス・ブラウザの種類などを処理します。詳細は
+              <a href="https://www.cloudflare.com/privacypolicy/" rel="noopener" target="_blank">Cloudflareのプライバシーポリシー</a>
+              をご確認ください。
+            </p>
+
+            <h2>3. アクセス解析</h2>
+            {anyAnalytics ? (
+              <>
+                <p>サイト改善のため、以下のサービスで利用状況を計測しています。</p>
+                <ul>
+                  {a.cloudflare && <li>Cloudflare Web Analytics：ページの閲覧数、参照元、国・ブラウザ・端末の種類。Cookieを使用せず、IPアドレスを保存しません。</li>}
+                  {a.plausible && <li>Plausible Analytics（Plausible Insights OÜ）：ページの閲覧数と、下記4のイベント。Cookieを使用しません。</li>}
+                  {a.zaraz && <li>Cloudflare Zaraz：下記4のイベント。</li>}
+                  {a.ga4 && <li>Google Analytics 4（Google LLC）：ページの閲覧数と下記4のイベント。Cookieを使用します。IPアドレスは匿名化されます。<a href="https://policies.google.com/privacy" rel="noopener" target="_blank">Googleのプライバシーポリシー</a></li>}
+                </ul>
+              </>
+            ) : (
+              <p>現在、アクセス解析サービスは使用していません（導入した場合は本ページに記載します）。</p>
+            )}
+
+            <h2>4. 計測するイベント</h2>
+            <p>
+              {anyAnalytics ? 'ボタンのクリックについて、次の情報のみを送信します。' : 'アクセス解析を導入した場合、ボタンのクリックについて次の情報のみを送信します。'}
+            </p>
+            <ul>
+              <li>イベントの種類（例：プレイテスト参加ボタン、App Storeボタン、Xリンク、言語切り替えのクリック）</li>
+              <li>表示中のページのパスと言語</li>
+              <li>流入元の大まかな分類（例：X、検索、直接）と、URLに含まれるUTMパラメータ</li>
+            </ul>
+            <p>
+              TestFlightへのリンクのクリックは「ボタンが押されたこと」の記録であり、実際にプレイテストに参加したかどうかを当サイトが知ることはありません。
+            </p>
+
+            <h2>5. ブラウザへの保存</h2>
+            <p>
+              当サイトは、選んだ言語（localStorage）と、同じイベントの重複送信を防ぐための記録・流入元（sessionStorage、タブを閉じると消えます）をブラウザに保存します。これらは外部に送信されません{a.ga4 ? '（Google Analyticsが使用するCookieを除く）' : ''}。
+            </p>
+
+            <h2>6. 外部サイト</h2>
+            <p>TestFlight、App Store、Xなど外部サイトへのリンク先では、それぞれの運営者のプライバシーポリシーが適用されます。</p>
+
+            <h2>7. お問い合わせ</h2>
+            <p>
+              {site.contactUrl ? <a href={site.contactUrl}>お問い合わせ</a> : x ? <>本ポリシーに関するお問い合わせは、<a href={x.url} rel="noopener" target="_blank">X（{site.xHandle}）</a>までご連絡ください。</> : null}
+            </p>
+
+            <h2>8. 改定</h2>
+            <p>本ポリシーは必要に応じて改定し、本ページに掲載した時点で効力を生じます。</p>
+            <p>最終更新日：{updated}</p>
+          </>
+        ) : (
+          <>
+            <p>
+              This policy explains how the {site.name} website (run by Katapote, “we”) handles information. Each app and game has its own privacy policy, linked from its App Store page.
+            </p>
+
+            <h2>1. What we don’t collect</h2>
+            <p>This site has no accounts, sign-in or forms. We do not collect names, email addresses or other information that directly identifies you.</p>
+
+            <h2>2. Hosting</h2>
+            <p>
+              The site is served by Cloudflare Pages (Cloudflare, Inc.). To deliver and protect the site, Cloudflare processes request data such as IP address and browser type. See the{' '}
+              <a href="https://www.cloudflare.com/privacypolicy/" rel="noopener" target="_blank">Cloudflare Privacy Policy</a>.
+            </p>
+
+            <h2>3. Analytics</h2>
+            {anyAnalytics ? (
+              <>
+                <p>To improve the site, we measure usage with:</p>
+                <ul>
+                  {a.cloudflare && <li>Cloudflare Web Analytics — page views, referrer, and country/browser/device type. No cookies; IP addresses are not stored.</li>}
+                  {a.plausible && <li>Plausible Analytics (Plausible Insights OÜ) — page views and the events in section 4. No cookies.</li>}
+                  {a.zaraz && <li>Cloudflare Zaraz — the events in section 4.</li>}
+                  {a.ga4 && <li>Google Analytics 4 (Google LLC) — page views and the events in section 4. Uses cookies; IP addresses are anonymized. <a href="https://policies.google.com/privacy" rel="noopener" target="_blank">Google Privacy Policy</a></li>}
+                </ul>
+              </>
+            ) : (
+              <p>No analytics service is currently in use. If one is added, it will be listed here.</p>
+            )}
+
+            <h2>4. Events</h2>
+            <p>{anyAnalytics ? 'When you click a button, we send only:' : 'If analytics is enabled, clicking a button sends only:'}</p>
+            <ul>
+              <li>The type of event (e.g. playtest button, App Store button, X link, language switch)</li>
+              <li>The page path and language</li>
+              <li>A coarse traffic-source label (e.g. X, search, direct) and any UTM parameters in the URL</li>
+            </ul>
+            <p>A click on the TestFlight link only records that the button was pressed. We cannot see whether you actually joined the playtest.</p>
+
+            <h2>5. Browser storage</h2>
+            <p>
+              We store your language choice (localStorage), and a record used to avoid sending the same event twice plus the traffic source (sessionStorage, cleared when you close the tab). These never leave your browser{a.ga4 ? ', apart from the cookies used by Google Analytics' : ''}.
+            </p>
+
+            <h2>6. External sites</h2>
+            <p>Links to TestFlight, the App Store, X and other sites are governed by those operators’ privacy policies.</p>
+
+            <h2>7. Contact</h2>
+            <p>
+              {site.contactUrl ? <a href={site.contactUrl}>Contact us</a> : x ? <>For questions about this policy, reach out on <a href={x.url} rel="noopener" target="_blank">X ({site.xHandle})</a>.</> : null}
+            </p>
+
+            <h2>8. Changes</h2>
+            <p>We may update this policy. Changes take effect when posted on this page.</p>
+            <p>Last updated: {updated}</p>
+          </>
+        )
+      }
+    </article>
+  </section>
+</Base>

@@ -1,0 +1,75 @@
+---
+import type { Feature, Locale } from '../config/types';
+import { l, useT } from '../i18n/ui';
+import Media from './Media.astro';
+
+interface Props {
+  features: Feature[];
+  locale: Locale;
+}
+const { features, locale } = Astro.props;
+const t = useT(locale);
+---
+
+{
+  features.length > 0 && (
+    <section class="section features" aria-labelledby="features-title">
+      <div class="container">
+        <h2 id="features-title" class="section-title">{t('features.heading')}</h2>
+        <ol class="features__list">
+          {features.map((f, i) => (
+            <li class="feature">
+              <Media
+                src={f.image}
+                alt={l(f.imageAlt, locale) || l(f.title, locale)}
+                ratio="16 / 9"
+                widths={[400, 640, 960]}
+                sizes="(min-width: 960px) 360px, 100vw"
+                placeholderLabel={t('placeholder.image')}
+              />
+              <div class="feature__text">
+                <span class="feature__num" aria-hidden="true">
+                  {String(i + 1).padStart(2, '0')}
+                </span>
+                <h3 class="feature__title">{l(f.title, locale)}</h3>
+                <p class="feature__body">{l(f.body, locale)}</p>
+              </div>
+            </li>
+          ))}
+        </ol>
+      </div>
+    </section>
+  )
+}
+
+<style>
+  .features__list {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+    display: grid;
+    gap: 2rem;
+  }
+  .feature__text {
+    margin-top: 0.85rem;
+  }
+  .feature__num {
+    font-family: var(--f-hand);
+    color: var(--c-accent-ink);
+    font-size: 1.1rem;
+  }
+  .feature__title {
+    margin: 0.1rem 0 0.25rem;
+    font-size: 1.2rem;
+  }
+  .feature__body {
+    margin: 0;
+    color: var(--c-muted);
+  }
+  @media (min-width: 760px) {
+    .features__list {
+      grid-template-columns: repeat(3, 1fr);
+      gap: 1.5rem;
+    }
+  }
+</style>

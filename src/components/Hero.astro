@@ -1,0 +1,142 @@
+---
+import type { Game, Locale } from '../config/types';
+import { l, statusLabel, useT } from '../i18n/ui';
+import Media from './Media.astro';
+
+interface Props {
+  game: Game;
+  locale: Locale;
+}
+const { game, locale } = Astro.props;
+const t = useT(locale);
+const testFlight = game.testFlight?.url ? game.testFlight : null;
+const appStore = game.appStore?.url ? game.appStore : null;
+const video = game.gameplayVideo?.url ? game.gameplayVideo : null;
+---
+
+<section class="hero" aria-labelledby="hero-title">
+  <div class="container hero__grid">
+    <Media
+      class="hero__media"
+      src={game.keyVisual}
+      alt={l(game.keyVisualAlt, locale) || l(game.title, locale)}
+      ratio="16 / 9"
+      sizes="(min-width: 960px) 560px, 100vw"
+      priority
+      placeholderLabel={t('placeholder.image')}
+    />
+    <div class="hero__copy">
+      <p class="eyebrow">
+        <span class="dot" aria-hidden="true"></span>
+        {game.status === 'playtest' ? t('hero.eyebrow') : statusLabel(game.status, locale)}
+      </p>
+      <h1 id="hero-title" class="hero__title">{l(game.title, locale)}</h1>
+      <p class="hero__catch">{l(game.catchcopy, locale)}</p>
+      <p class="hero__desc">{l(game.description, locale)}</p>
+      <div class="hero__ctas">
+        {
+          testFlight && (
+            <a class="btn btn--primary" href={testFlight.url} target="_blank" rel="noopener" data-track={testFlight.event} data-track-location="hero">
+              {t('cta.playtest')}
+              <svg width="18" height="18" viewBox="0 0 24 24" aria-hidden="true"><path d="M5 12h13M13 6l6 6-6 6" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" /></svg>
+            </a>
+          )
+        }
+        {
+          !testFlight && appStore && (
+            <a class="btn btn--primary" href={appStore.url} target="_blank" rel="noopener" data-track={appStore.event} data-track-location="hero">
+              {t('cta.appstore')}
+            </a>
+          )
+        }
+        {
+          video && (
+            <a class="btn btn--ghost" href={video.url} target="_blank" rel="noopener" data-track={video.event} data-track-location="hero">
+              <svg width="16" height="16" viewBox="0 0 24 24" aria-hidden="true"><path d="M7 4.5v15l12.5-7.5L7 4.5Z" fill="currentColor" /></svg>
+              {t('cta.gameplay')}
+            </a>
+          )
+        }
+      </div>
+      {testFlight && <p class="hero__note">{t('cta.playtestNote')}</p>}
+    </div>
+  </div>
+</section>
+
+<style>
+  .hero {
+    padding: 1rem 0 2.5rem;
+  }
+  .hero__grid {
+    display: grid;
+    gap: 1.25rem;
+  }
+  .eyebrow {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.5rem;
+    margin: 0 0 0.5rem;
+    font-size: 0.8rem;
+    font-weight: 700;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    color: var(--c-accent-ink);
+  }
+  .dot {
+    width: 8px;
+    height: 8px;
+    border-radius: 50%;
+    background: var(--c-accent);
+  }
+  .hero__title {
+    margin: 0;
+    font-family: var(--f-hand);
+    font-weight: 400;
+    font-size: clamp(2.3rem, 9vw, 4rem);
+    line-height: 1;
+    letter-spacing: 0.01em;
+  }
+  .hero__catch {
+    margin: 0.75rem 0 0;
+    font-size: clamp(1.1rem, 4.4vw, 1.4rem);
+    font-weight: 700;
+    line-height: 1.35;
+  }
+  .hero__desc {
+    margin: 0.5rem 0 0;
+    color: var(--c-muted);
+    max-width: 34rem;
+  }
+  .hero__ctas {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.75rem;
+    margin-top: 1.25rem;
+  }
+  .hero__ctas .btn--primary {
+    flex: 1 1 100%;
+  }
+  .hero__note {
+    margin: 0.6rem 0 0;
+    font-size: 0.8rem;
+    color: var(--c-muted);
+  }
+  @media (min-width: 560px) {
+    .hero__ctas .btn--primary {
+      flex: 0 0 auto;
+    }
+  }
+  @media (min-width: 960px) {
+    .hero {
+      padding: 3.5rem 0 4rem;
+    }
+    .hero__grid {
+      grid-template-columns: 1.1fr 1fr;
+      align-items: center;
+      gap: 3rem;
+    }
+    .hero__copy {
+      order: -1;
+    }
+  }
+</style>

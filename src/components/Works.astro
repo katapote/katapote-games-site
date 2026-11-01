@@ -1,0 +1,42 @@
+---
+import type { Game, Locale } from '../config/types';
+import { useT } from '../i18n/ui';
+import GameCard from './GameCard.astro';
+
+interface Props {
+  games: Game[];
+  locale: Locale;
+}
+const { games, locale } = Astro.props;
+const t = useT(locale);
+---
+
+{
+  games.length > 0 && (
+    <section class="section" aria-labelledby="works-title">
+      <div class="container">
+        <h2 id="works-title" class="section-title">{t('works.heading')}</h2>
+        <ul class="works">
+          {games.map((g) => (
+            <GameCard game={g} locale={locale} />
+          ))}
+        </ul>
+      </div>
+    </section>
+  )
+}
+
+<style>
+  .works {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+    display: grid;
+    gap: 1rem;
+  }
+  @media (min-width: 760px) {
+    .works {
+      grid-template-columns: repeat(2, 1fr);
+    }
+  }
+</style>

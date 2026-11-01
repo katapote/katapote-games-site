@@ -1,0 +1,159 @@
+---
+import type { Locale } from '../config/types';
+import { activeSocials, site } from '../config/site';
+import { localePath, useT } from '../i18n/ui';
+import SocialIcon from './SocialIcon.astro';
+
+interface Props {
+  locale: Locale;
+  path: string;
+}
+const { locale, path } = Astro.props;
+const t = useT(locale);
+const headerSocials = activeSocials.filter((s) => s.inHeader);
+const langs: Locale[] = ['en', 'ja'];
+---
+
+<header class="site-header">
+  <div class="container site-header__inner">
+    <a class="logo" href={localePath(locale, '/')}>
+      <span class="logo__mark" aria-hidden="true">K</span>
+      <span class="logo__text">KATAPOTE<span class="logo__thin"> GAMES</span></span>
+      <span class="sr-only">{site.name}</span>
+    </a>
+    <div class="site-header__actions">
+      {
+        headerSocials.map((s) => (
+          <a
+            class="icon-link"
+            href={s.url}
+            target="_blank"
+            rel="noopener"
+            data-track={s.event}
+            data-track-location="header"
+            aria-label={`${s.label} ${t('newTab')}`}
+          >
+            <SocialIcon id={s.id} />
+          </a>
+        ))
+      }
+      <nav class="lang-switch" aria-label={t('lang.label')}>
+        {
+          langs.map((loc) =>
+            loc === locale ? (
+              <span class="lang-switch__item is-current" aria-current="true" lang={loc}>
+                {t(`lang.${loc}`)}
+              </span>
+            ) : (
+              <a
+                class="lang-switch__item"
+                href={localePath(loc, path)}
+                hreflang={loc}
+                lang={loc}
+                data-track="language_switch"
+                data-track-to={loc}
+              >
+                {t(`lang.${loc}`)}
+                <span class="sr-only">{loc === 'ja' ? '日本語' : 'English'}</span>
+              </a>
+            ),
+          )
+        }
+      </nav>
+    </div>
+  </div>
+</header>
+
+<style>
+  .site-header {
+    position: sticky;
+    top: 0;
+    z-index: 10;
+    background: rgb(17 14 23 / 0.92);
+    backdrop-filter: blur(6px);
+    border-bottom: 1px solid var(--c-line-soft);
+  }
+  .site-header__inner {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    min-height: 56px;
+    gap: 1rem;
+  }
+  .logo {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.55rem;
+    color: var(--c-ink);
+    text-decoration: none;
+    font-weight: 800;
+    letter-spacing: 0.08em;
+    font-size: 0.95rem;
+  }
+  .logo__mark {
+    display: inline-grid;
+    place-items: center;
+    width: 30px;
+    height: 30px;
+    font-family: var(--f-hand);
+    font-size: 1.1rem;
+    color: var(--c-bg);
+    background: var(--c-ink);
+    border-radius: 48% 52% 45% 55% / 55% 45% 55% 45%;
+    transform: rotate(-4deg);
+  }
+  .logo__thin {
+    font-weight: 500;
+    color: var(--c-muted);
+  }
+  .logo__text {
+    white-space: nowrap;
+  }
+  .site-header__actions {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+  }
+  .icon-link {
+    display: inline-grid;
+    place-items: center;
+    width: 44px;
+    height: 44px;
+    color: var(--c-ink);
+    border-radius: 50%;
+  }
+  .icon-link:hover {
+    background: var(--c-surface-2);
+  }
+  .lang-switch {
+    display: inline-flex;
+    border: 1.5px solid var(--c-line);
+    border-radius: 999px;
+    padding: 2px;
+  }
+  .lang-switch__item {
+    display: inline-grid;
+    place-items: center;
+    min-width: 40px;
+    min-height: 36px;
+    padding: 0 0.6rem;
+    border-radius: 999px;
+    font-size: 0.8rem;
+    font-weight: 700;
+    letter-spacing: 0.06em;
+    color: var(--c-muted);
+    text-decoration: none;
+  }
+  a.lang-switch__item:hover {
+    color: var(--c-ink);
+  }
+  .lang-switch__item.is-current {
+    background: var(--c-ink);
+    color: var(--c-bg);
+  }
+  @media (max-width: 359px) {
+    .logo__thin {
+      display: none;
+    }
+  }
+</style>

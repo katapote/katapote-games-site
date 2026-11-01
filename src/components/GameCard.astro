@@ -1,0 +1,97 @@
+---
+import type { Game, Locale } from '../config/types';
+import { l, statusLabel, useT } from '../i18n/ui';
+import Media from './Media.astro';
+
+interface Props {
+  game: Game;
+  locale: Locale;
+}
+const { game, locale } = Astro.props;
+const t = useT(locale);
+const title = l(game.title, locale);
+// Prefer the App Store; fall back to TestFlight for playtest titles.
+const link = game.appStore?.url ? game.appStore : game.testFlight?.url ? game.testFlight : null;
+const linkLabel = game.appStore?.url ? t('cta.appstore') : t('cta.playtest');
+---
+
+<li class="card" id={game.id}>
+  <Media
+    class="card__icon"
+    variant="icon"
+    src={game.icon}
+    alt={`${title} icon`}
+    ratio="1 / 1"
+    widths={[96, 192]}
+    sizes="96px"
+    placeholderLabel={t('placeholder.image')}
+  />
+  <div class="card__body">
+    <h3 class="card__title">
+      {title}
+      {locale === 'en' && game.title.ja && <span class="card__alt" lang="ja">{game.title.ja}</span>}
+    </h3>
+    <p class="card__tagline">{l(game.tagline, locale)}</p>
+    <p class="card__status">{statusLabel(game.status, locale)}</p>
+    {
+      link ? (
+        <a class="btn btn--small" href={link.url} target="_blank" rel="noopener" data-track={link.event} data-track-location="works">
+          {linkLabel}
+          <span class="sr-only">: {title} {t('newTab')}</span>
+        </a>
+      ) : (
+        <p class="card__soon">{t('cta.storeSoon')}</p>
+      )
+    }
+  </div>
+</li>
+
+<style>
+  .card {
+    display: grid;
+    grid-template-columns: 72px 1fr;
+    gap: 1rem;
+    align-items: start;
+    padding: 1.1rem;
+    background: var(--c-surface);
+    border: 1.5px solid var(--c-line);
+    border-radius: var(--r-sketch);
+  }
+  .card :global(.card__icon) {
+    width: 72px;
+  }
+  .card__title {
+    margin: 0;
+    font-size: 1.15rem;
+    display: flex;
+    flex-wrap: wrap;
+    align-items: baseline;
+    gap: 0 0.5rem;
+  }
+  .card__alt {
+    font-size: 0.85rem;
+    font-weight: 500;
+    color: var(--c-muted);
+  }
+  .card__tagline {
+    margin: 0.25rem 0 0;
+  }
+  .card__status {
+    margin: 0.4rem 0 0.8rem;
+    font-size: 0.8rem;
+    color: var(--c-muted);
+  }
+  .card__soon {
+    margin: 0;
+    font-size: 0.85rem;
+    color: var(--c-muted);
+  }
+  @media (min-width: 560px) {
+    .card {
+      grid-template-columns: 96px 1fr;
+    }
+    .card :global(.card__icon) {
+      width: 96px;
+    }
+  }
+</style>

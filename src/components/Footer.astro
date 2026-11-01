@@ -1,0 +1,74 @@
+---
+import type { Locale } from '../config/types';
+import { activeSocials, site } from '../config/site';
+import { localePath, useT } from '../i18n/ui';
+
+interface Props {
+  locale: Locale;
+}
+const { locale } = Astro.props;
+const t = useT(locale);
+const x = activeSocials.find((s) => s.id === 'x');
+const year = new Date().getFullYear();
+---
+
+<footer class="site-footer">
+  <div class="container site-footer__inner">
+    <p class="site-footer__copy">© {year} {site.name}</p>
+    <ul class="site-footer__links">
+      {
+        x && (
+          <li>
+            <a href={x.url} target="_blank" rel="noopener" data-track={x.event} data-track-location="footer">
+              X<span class="sr-only"> {t('newTab')}</span>
+            </a>
+          </li>
+        )
+      }
+      <li><a href={localePath(locale, '/privacy/')}>{t('footer.privacy')}</a></li>
+      {
+        site.contactUrl && (
+          <li>
+            <a href={site.contactUrl}>{t('footer.contact')}</a>
+          </li>
+        )
+      }
+    </ul>
+  </div>
+</footer>
+
+<style>
+  .site-footer {
+    margin-top: 2rem;
+    border-top: 1px solid var(--c-line-soft);
+    padding: 1.5rem 0 calc(1.5rem + env(safe-area-inset-bottom));
+    font-size: 0.875rem;
+    color: var(--c-muted);
+  }
+  .site-footer__inner {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.75rem 1.5rem;
+    justify-content: space-between;
+    align-items: center;
+  }
+  .site-footer__copy {
+    margin: 0;
+  }
+  .site-footer__links {
+    list-style: none;
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.25rem 1.25rem;
+    margin: 0;
+    padding: 0;
+  }
+  .site-footer a {
+    color: var(--c-muted);
+    display: inline-block;
+    padding: 0.5rem 0;
+  }
+  .site-footer a:hover {
+    color: var(--c-ink);
+  }
+</style>
