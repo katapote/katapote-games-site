@@ -89,6 +89,16 @@ const langs: Locale[] = ['en', 'ja'];
     font-weight: 800;
     letter-spacing: 0.08em;
     font-size: 0.95rem;
+    white-space: nowrap;
+  }
+  @media (max-width: 380px) {
+    .site-header__inner {
+      gap: 0.5rem;
+    }
+    .logo {
+      letter-spacing: 0.04em;
+      font-size: 0.85rem;
+    }
   }
   .logo__mark {
     display: inline-grid;

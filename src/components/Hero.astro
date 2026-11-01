@@ -30,7 +30,14 @@ const video = game.gameplayVideo?.url ? game.gameplayVideo : null;
         <span class="dot" aria-hidden="true"></span>
         {game.status === 'playtest' ? t('hero.eyebrow') : statusLabel(game.status, locale)}
       </p>
-      <h1 id="hero-title" class="hero__title">{l(game.title, locale)}</h1>
+      <div class="hero__titlerow">
+        {
+          game.icon && (
+            <Media class="hero__icon" variant="icon" src={game.icon} alt="" ratio="1 / 1" widths={[96, 160]} sizes="80px" placeholderLabel="" />
+          )
+        }
+        <h1 id="hero-title" class="hero__title">{l(game.title, locale)}</h1>
+      </div>
       <p class="hero__catch">{l(game.catchcopy, locale)}</p>
       <p class="hero__desc">{l(game.description, locale)}</p>
       <div class="hero__ctas">
@@ -71,6 +78,20 @@ const video = game.gameplayVideo?.url ? game.gameplayVideo : null;
     display: grid;
     gap: 1.25rem;
   }
+  .hero__titlerow {
+    display: flex;
+    align-items: center;
+    gap: 0.9rem;
+  }
+  .hero__titlerow :global(.hero__icon) {
+    flex: 0 0 auto;
+    width: 56px;
+  }
+  @media (min-width: 960px) {
+    .hero__titlerow :global(.hero__icon) {
+      width: 80px;
+    }
+  }
   .eyebrow {
     display: inline-flex;
     align-items: center;
@@ -95,6 +116,16 @@ const video = game.gameplayVideo?.url ? game.gameplayVideo : null;
     font-size: clamp(2.3rem, 9vw, 4rem);
     line-height: 1;
     letter-spacing: 0.01em;
+  }
+  /* Japanese title is longer: keep it on one line next to the icon. */
+  .hero__title:lang(ja) {
+    font-size: clamp(1.35rem, 7vw, 2.9rem);
+    white-space: nowrap;
+  }
+  @media (min-width: 960px) {
+    .hero__title:lang(ja) {
+      font-size: clamp(1.6rem, 3.4vw, 2.9rem);
+    }
   }
   .hero__catch {
     margin: 0.75rem 0 0;
