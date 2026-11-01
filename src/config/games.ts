@@ -14,7 +14,7 @@ export const games: Game[] = [
     featured: true,
     order: 1,
     status: 'playtest',
-    title: { en: 'Doodle Nightmare' },
+    title: { en: 'Doodle Nightmare', ja: 'らくがきナイトメア' },
     tagline: {
       en: 'A hand-drawn nightmare FPS.',
       ja: '手描きの悪夢FPS。',
@@ -30,7 +30,7 @@ export const games: Game[] = [
     keyVisual: 'doodle-nightmare/key-visual.png',
     keyVisualAlt: {
       en: 'Doodle Nightmare key visual',
-      ja: 'Doodle Nightmare のキービジュアル',
+      ja: 'らくがきナイトメア のゲーム画面',
     },
     icon: 'doodle-nightmare/icon.png',
     testFlight: {
