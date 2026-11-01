@@ -75,8 +75,8 @@ export const games: Game[] = [
     status: 'available',
     title: { en: 'Omoidase' },
     tagline: {
-      en: 'Save what matters. Find it when you need it.',
-      ja: '大事なものを保存して、必要なときに見つける。',
+      en: 'Find what you saved — even from a half-remembered word.',
+      ja: '「あれ何だっけ」から見つかる。',
     },
     icon: 'omoidase/icon.png',
     // TODO: set the official App Store URL (e.g. https://apps.apple.com/app/idXXXXXXXXXX)
@@ -88,8 +88,8 @@ export const games: Game[] = [
     status: 'available',
     title: { en: 'Bou no Ichizoku', ja: 'ぼうの一族' },
     tagline: {
-      en: 'Raise, evolve, and discover your stick-figure lineage.',
-      ja: '棒人間の一族を育て、進化させ、発見しよう。',
+      en: 'A stick-figure idle RPG.',
+      ja: '棒人間の放置育成RPG。',
     },
     icon: 'bou-no-ichizoku/icon.png',
     appStore: {
