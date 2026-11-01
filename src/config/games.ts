@@ -29,8 +29,8 @@ export const games: Game[] = [
     },
     keyVisual: 'doodle-nightmare/key-visual.png',
     keyVisualAlt: {
-      en: 'Doodle Nightmare key visual',
-      ja: 'らくがきナイトメア のゲーム画面',
+      en: 'Doodle Nightmare title screen',
+      ja: 'らくがきナイトメア のタイトル画面',
     },
     icon: 'doodle-nightmare/icon.png',
     testFlight: {
