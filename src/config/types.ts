@@ -11,6 +11,8 @@ export type TrackEvent =
   | 'click_doodle_gameplay'
   | 'click_omoidase_appstore'
   | 'click_bou_appstore'
+  | 'click_synapse_appstore'
+  | 'click_flipshot_appstore'
   | 'click_x_profile'
   | 'language_switch';
 

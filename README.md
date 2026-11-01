@@ -86,6 +86,8 @@ It also renders `public/apple-touch-icon.png` and `public/favicon-32.png` from
 | `click_doodle_gameplay` | "Watch Gameplay" |
 | `click_omoidase_appstore` | Omoidase App Store button (only once its URL is set) |
 | `click_bou_appstore` | ぼうの一族 App Store button |
+| `click_synapse_appstore` | シナプス App Store button |
+| `click_flipshot_appstore` | フリップショット App Store button |
 | `click_x_profile` | any X link (`location` = header / about / footer) |
 | `language_switch` | EN/JP switch (`from`, `to`) |
 

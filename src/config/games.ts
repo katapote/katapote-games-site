@@ -102,6 +102,36 @@ export const games: Game[] = [
       event: 'click_bou_appstore',
     },
   },
+  {
+    id: 'synapse',
+    order: 4,
+    status: 'available',
+    title: { en: 'Synapse', ja: 'シナプス' },
+    tagline: {
+      en: 'An elemental-synergy bullet-hell roguelite.',
+      ja: '属性シナジー弾幕ローグライト。',
+    },
+    icon: 'synapse/icon.png',
+    appStore: {
+      url: 'https://apps.apple.com/app/id6791659740',
+      event: 'click_synapse_appstore',
+    },
+  },
+  {
+    id: 'flip-shot',
+    order: 5,
+    status: 'available',
+    title: { en: 'Flip Shot', ja: 'フリップショット' },
+    tagline: {
+      en: 'Stick-figure gun action.',
+      ja: '棒人間ガンアクション。',
+    },
+    icon: 'flip-shot/icon.png',
+    appStore: {
+      url: 'https://apps.apple.com/app/id6809098164',
+      event: 'click_flipshot_appstore',
+    },
+  },
 ];
 
 export const sortedGames = [...games].sort((a, b) => a.order - b.order);
