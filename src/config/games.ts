@@ -57,7 +57,7 @@ export const games: Game[] = [
           ja: '描いた形によって、武器の性能が変わる。',
         },
         image: 'doodle-nightmare/feature-stats.png',
-        video: '/media/doodle-nightmare/feature-stats.mp4',
+        video: '/media/doodle-nightmare/feature-stats-v2.mp4',
         imageAlt: { en: 'Weapon stats and upgrade screen', ja: '武器の性能と強化の画面' },
       },
       {
