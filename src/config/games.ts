@@ -79,8 +79,10 @@ export const games: Game[] = [
       ja: '「あれ何だっけ」から見つかる。',
     },
     icon: 'omoidase/icon.png',
-    // TODO: set the official App Store URL (e.g. https://apps.apple.com/app/idXXXXXXXXXX)
-    appStore: { url: null, event: 'click_omoidase_appstore' },
+    appStore: {
+      url: 'https://apps.apple.com/app/id6789476021',
+      event: 'click_omoidase_appstore',
+    },
   },
   {
     id: 'bou-no-ichizoku',
