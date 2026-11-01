@@ -47,6 +47,7 @@ export const games: Game[] = [
           ja: '自分の武器を、画面に直接描いてつくる。',
         },
         image: 'doodle-nightmare/feature-draw.png',
+        video: '/media/doodle-nightmare/feature-draw.mp4',
         imageAlt: { en: 'Drawing a weapon', ja: '武器を描いている画面' },
       },
       {
@@ -56,7 +57,8 @@ export const games: Game[] = [
           ja: '描いた形によって、武器の性能が変わる。',
         },
         image: 'doodle-nightmare/feature-stats.png',
-        imageAlt: { en: 'Weapon stats screen', ja: '武器の性能画面' },
+        video: '/media/doodle-nightmare/feature-stats.mp4',
+        imageAlt: { en: 'Weapon stats and upgrade screen', ja: '武器の性能と強化の画面' },
       },
       {
         title: { en: 'Fight Nightmares', ja: '悪夢と戦う' },
@@ -65,7 +67,8 @@ export const games: Game[] = [
           ja: '手描きの悪夢の世界で戦い抜く。',
         },
         image: 'doodle-nightmare/feature-fight.png',
-        imageAlt: { en: 'Combat against nightmares', ja: '悪夢との戦闘画面' },
+        video: '/media/doodle-nightmare/feature-fight.mp4',
+        imageAlt: { en: 'Fighting nightmares in a hand-drawn corridor', ja: '手描きの廊下で悪夢と戦う画面' },
       },
     ],
   },

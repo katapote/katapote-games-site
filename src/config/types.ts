@@ -27,6 +27,8 @@ export interface Feature {
   /** Path under src/assets/games/ (e.g. 'doodle-nightmare/feature-draw.png'). */
   image?: string;
   imageAlt?: Localized;
+  /** Optional muted looping clip under public/ (e.g. '/media/doodle-nightmare/feature-draw.mp4'). `image` is its poster. */
+  video?: string;
 }
 
 export interface Game {

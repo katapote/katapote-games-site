@@ -18,6 +18,8 @@ interface Props {
   placeholderLabel: string;
   class?: string;
   variant?: 'frame' | 'icon';
+  /** Muted looping clip (public path). Plays over the image while on screen; skipped with reduced motion. */
+  video?: string;
 }
 
 const {
@@ -30,6 +32,7 @@ const {
   placeholderLabel,
   class: className,
   variant = 'frame',
+  video,
 } = Astro.props;
 const image = gameImage(src);
 // Never upscale: keep requested widths smaller than the source, plus the source width.
@@ -64,7 +67,31 @@ if (src && !image && import.meta.env.DEV) {
       </div>
     )
   }
+  {video && <video class="media__video" data-src={video} muted loop playsinline preload="none" aria-hidden="true" tabindex="-1" />}
 </div>
+
+<script>
+  // Load/play clips only while visible; never with reduced motion. Without JS the poster image stays.
+  const clips = document.querySelectorAll<HTMLVideoElement>('video.media__video');
+  const reduce = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+  if (clips.length && !reduce && 'IntersectionObserver' in window) {
+    const io = new IntersectionObserver(
+      (entries) => {
+        for (const e of entries) {
+          const v = e.target as HTMLVideoElement;
+          if (e.isIntersecting) {
+            if (!v.src) v.src = v.dataset.src ?? '';
+            v.play().then(() => v.classList.add('is-playing')).catch(() => {});
+          } else {
+            v.pause();
+          }
+        }
+      },
+      { rootMargin: '200px 0px' },
+    );
+    clips.forEach((v) => io.observe(v));
+  }
+</script>
 
 <style>
   .media {
@@ -87,6 +114,18 @@ if (src && !image && import.meta.env.DEV) {
     width: 100%;
     height: 100%;
     object-fit: cover;
+  }
+  .media__video {
+    position: absolute;
+    inset: 0;
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    opacity: 0;
+    transition: opacity 0.3s ease;
+  }
+  .media__video.is-playing {
+    opacity: 1;
   }
   .media__placeholder {
     position: absolute;
