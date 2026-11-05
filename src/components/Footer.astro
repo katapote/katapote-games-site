@@ -1,7 +1,7 @@
 ---
 import type { Locale } from '../config/types';
 import { activeSocials, site } from '../config/site';
-import { localePath, useT } from '../i18n/ui';
+import { l, localePath, useT } from '../i18n/ui';
 
 interface Props {
   locale: Locale;
@@ -26,6 +26,15 @@ const year = new Date().getFullYear();
         )
       }
       <li><a href={localePath(locale, '/privacy/')}>{t('footer.privacy')}</a></li>
+      {
+        site.footerLink && (
+          <li>
+            <a href={site.footerLink.url} target="_blank" rel="noopener" data-track="click_footer_link" data-track-location="footer">
+              {l(site.footerLink.label, locale)}<span class="sr-only"> {t('newTab')}</span>
+            </a>
+          </li>
+        )
+      }
       {
         site.contactUrl && (
           <li>

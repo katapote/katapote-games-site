@@ -37,6 +37,11 @@ export const site = {
   xHandle: '@potato05110813',
   /** Shown in footer only when set. e.g. 'mailto:you@example.com' or a form URL. */
   contactUrl: null as string | null,
+  /** Optional footer link, e.g. to the template this site is built from. null hides it. */
+  footerLink: {
+    url: 'https://github.com/katapote/indie-game-site-template',
+    label: { en: 'Free site template', ja: 'このサイトのテンプレート（無料）' },
+  } as { url: string; label: Localized } | null,
   developer: {
     name: { en: 'Katapote', ja: 'かたぽて' } satisfies Localized,
     bio: {
