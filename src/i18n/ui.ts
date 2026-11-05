@@ -16,7 +16,6 @@ export const ui = {
     'cta.appstore': 'View on the App Store',
     'cta.storeSoon': 'Store link coming soon',
     'features.heading': 'How it plays',
-    'works.heading': 'More from Katapote',
     'about.heading': 'About the developer',
     'about.follow': 'Follow on',
     'status.playtest': 'Playtest open',
@@ -27,7 +26,6 @@ export const ui = {
     'placeholder.image': 'Image coming soon',
     'newTab': '(opens in a new tab)',
     'notfound.title': 'Page not found',
-    'notfound.body': 'This page drifted into the nightmare.',
     'notfound.back': 'Back to home',
   },
   ja: {
@@ -42,7 +40,6 @@ export const ui = {
     'cta.appstore': 'App Storeで見る',
     'cta.storeSoon': 'ストアリンク準備中',
     'features.heading': 'ゲームの特徴',
-    'works.heading': 'その他の作品',
     'about.heading': '開発者について',
     'about.follow': 'フォローする',
     'status.playtest': 'プレイテスト募集中',
@@ -53,7 +50,6 @@ export const ui = {
     'placeholder.image': '画像準備中',
     'newTab': '（新しいタブで開きます）',
     'notfound.title': 'ページが見つかりません',
-    'notfound.body': 'このページは悪夢の中に消えてしまいました。',
     'notfound.back': 'ホームへ戻る',
   },
 } as const;

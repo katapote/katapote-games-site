@@ -15,6 +15,15 @@ export interface SocialLink {
 
 export const site = {
   name: 'Katapote Games',
+  /** Header logo: a 1–2 character mark plus a two-part wordmark (second part is drawn lighter). */
+  brand: { mark: 'K', wordmark: 'KATAPOTE', wordmarkThin: ' GAMES' },
+  /** Heading of the "other games" section. */
+  worksHeading: { en: 'More from Katapote', ja: 'その他の作品' } satisfies Localized,
+  /** Text on the 404 page. */
+  notFoundBody: {
+    en: 'This page drifted into the nightmare.',
+    ja: 'このページは悪夢の中に消えてしまいました。',
+  } satisfies Localized,
   defaultTitle: {
     en: 'Katapote Games — Doodle Nightmare & indie apps',
     ja: 'Katapote Games — Doodle Nightmare と個人開発アプリ',

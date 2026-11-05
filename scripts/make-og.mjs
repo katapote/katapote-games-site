@@ -3,15 +3,18 @@
  *   public/og/og-default.png  (1200×630, used for og:image / twitter:image)
  *   public/apple-touch-icon.png, public/favicon-32.png
  *
- * If src/assets/games/doodle-nightmare/key-visual.(png|jpg|webp) exists,
- * the OG image is built from that real game art (cropped to 1200×630 with
- * a dark band and the title). Otherwise a text-only brand card is produced.
+ * Text comes from the featured game in src/config/games.ts and the brand in
+ * src/config/site.ts. If the featured game's `keyVisual` file exists, the OG
+ * image is built from that art (cropped to 1200×630 with a dark band and the
+ * title). Otherwise a text-only brand card is produced.
  *
  * Usage: npm run og   (re-run after adding or changing the key visual)
  */
 import sharp from 'sharp';
 import { existsSync, mkdirSync, readFileSync } from 'node:fs';
 import { resolve } from 'node:path';
+import { featuredGame as game } from '../src/config/games.ts';
+import { site } from '../src/config/site.ts';
 
 const root = resolve(import.meta.dirname, '..');
 const out = (p) => resolve(root, 'public', p);
@@ -19,15 +22,20 @@ mkdirSync(out('og'), { recursive: true });
 
 const W = 1200;
 const H = 630;
-const kv = ['png', 'jpg', 'jpeg', 'webp']
-  .map((ext) => resolve(root, `src/assets/games/doodle-nightmare/key-visual.${ext}`))
+const kv = [game.keyVisual]
+  .filter(Boolean)
+  .map((p) => resolve(root, 'src/assets/games', p))
   .find(existsSync);
 
 const esc = (s) => s.replace(/&/g, '&amp;').replace(/</g, '&lt;');
-const title = 'Doodle Nightmare';
-const line = 'Draw weapons. Shape their stats. Fight nightmares.';
-const brand = 'KATAPOTE GAMES';
-const cta = 'Join the Playtest on TestFlight';
+const title = game.title.en;
+const line = game.catchcopy?.en ?? game.tagline?.en ?? '';
+const brand = `${site.brand.wordmark}${site.brand.wordmarkThin}`.toUpperCase();
+const cta = game.testFlight?.url
+  ? 'Join the Playtest on TestFlight'
+  : game.appStore?.url
+    ? 'Available on the App Store'
+    : '';
 
 const textLayer = (withArt) => Buffer.from(`
 <svg xmlns="http://www.w3.org/2000/svg" width="${W}" height="${H}">
@@ -38,7 +46,7 @@ const textLayer = (withArt) => Buffer.from(`
   <text x="70" y="${withArt ? 470 : 300}" font-family="Permanent Marker, DejaVu Sans, sans-serif" font-weight="700" font-size="${withArt ? 76 : 96}" fill="#efeadf">${esc(title)}</text>
   <text x="72" y="${withArt ? 530 : 380}" font-family="DejaVu Sans, sans-serif" font-weight="700" font-size="34" fill="#efeadf">${esc(line)}</text>
   <text x="72" y="${withArt ? 582 : 440}" font-family="DejaVu Sans, sans-serif" font-size="26" fill="#c4b0f2">${esc(cta)}</text>
-  <text x="72" y="${withArt ? 70 : 110}" font-family="DejaVu Sans, sans-serif" font-weight="700" font-size="24" letter-spacing="6" fill="#b3abbd">${brand}</text>
+  ${withArt ? '' : `<text x="72" y="110" font-family="DejaVu Sans, sans-serif" font-weight="700" font-size="24" letter-spacing="6" fill="#b3abbd">${esc(brand)}</text>`}
 </svg>`);
 
 if (kv) {

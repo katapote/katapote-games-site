@@ -7,7 +7,7 @@
 import type { Locale } from '../config/types';
 import { activeSocials, site } from '../config/site';
 import { analyticsInUse as a } from '../config/analytics';
-import { useT } from '../i18n/ui';
+import { l, useT } from '../i18n/ui';
 import Base from '../layouts/Base.astro';
 
 interface Props {
@@ -29,7 +29,7 @@ const updated = '2026-11-01';
         ja ? (
           <>
             <p>
-              本ポリシーは、{site.name}（運営：かたぽて。以下「当サイト」）のWebサイトにおける情報の取り扱いを説明するものです。各アプリ・ゲームにおける情報の取り扱いは、それぞれのApp Storeページに掲載されたプライバシーポリシーをご確認ください。
+              本ポリシーは、{site.name}（運営：{l(site.developer.name, 'ja')}。以下「当サイト」）のWebサイトにおける情報の取り扱いを説明するものです。各アプリ・ゲームにおける情報の取り扱いは、それぞれのApp Storeページに掲載されたプライバシーポリシーをご確認ください。
             </p>
 
             <h2>1. 当サイトが取得しない情報</h2>
@@ -90,7 +90,7 @@ const updated = '2026-11-01';
         ) : (
           <>
             <p>
-              This policy explains how the {site.name} website (run by Katapote, “we”) handles information. Each app and game has its own privacy policy, linked from its App Store page.
+              This policy explains how the {site.name} website (run by {l(site.developer.name, 'en')}, “we”) handles information. Each app and game has its own privacy policy, linked from its App Store page.
             </p>
 
             <h2>1. What we don’t collect</h2>

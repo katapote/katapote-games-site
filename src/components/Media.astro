@@ -38,7 +38,7 @@ const image = gameImage(src);
 // Never upscale: keep requested widths smaller than the source, plus the source width.
 const usableWidths = image ? [...widths.filter((w) => w < image.width), Math.min(image.width, Math.max(...widths))] : [];
 if (src && !image && import.meta.env.DEV) {
-  console.warn(`[katapote] image not found: src/assets/games/${src} (showing placeholder)`);
+  console.warn(`[site] image not found: src/assets/games/${src} (showing placeholder)`);
 }
 ---
 

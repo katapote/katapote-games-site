@@ -5,16 +5,7 @@ export type Localized = { en: string; ja?: string };
 export type GameStatus = 'playtest' | 'available' | 'coming-soon';
 
 /** Event names the analytics layer accepts (see src/scripts/analytics.ts). */
-export type TrackEvent =
-  | 'page_view'
-  | 'click_doodle_testflight'
-  | 'click_doodle_gameplay'
-  | 'click_omoidase_appstore'
-  | 'click_bou_appstore'
-  | 'click_synapse_appstore'
-  | 'click_flipshot_appstore'
-  | 'click_x_profile'
-  | 'language_switch';
+export type TrackEvent = 'page_view' | 'language_switch' | `click_${string}`;
 
 export interface StoreLink {
   /** Leave as null until the real URL exists — the button is hidden then. */

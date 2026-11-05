@@ -17,8 +17,8 @@ const langs: Locale[] = ['en', 'ja'];
 <header class="site-header">
   <div class="container site-header__inner">
     <a class="logo" href={localePath(locale, '/')}>
-      <span class="logo__mark" aria-hidden="true">K</span>
-      <span class="logo__text">KATAPOTE<span class="logo__thin"> GAMES</span></span>
+      <span class="logo__mark" aria-hidden="true">{site.brand.mark}</span>
+      <span class="logo__text">{site.brand.wordmark}<span class="logo__thin">{site.brand.wordmarkThin}</span></span>
       <span class="sr-only">{site.name}</span>
     </a>
     <div class="site-header__actions">

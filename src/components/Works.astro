@@ -1,6 +1,7 @@
 ---
 import type { Game, Locale } from '../config/types';
-import { useT } from '../i18n/ui';
+import { site } from '../config/site';
+import { l, useT } from '../i18n/ui';
 import GameCard from './GameCard.astro';
 
 interface Props {
@@ -15,7 +16,7 @@ const t = useT(locale);
   games.length > 0 && (
     <section class="section" aria-labelledby="works-title">
       <div class="container">
-        <h2 id="works-title" class="section-title">{t('works.heading')}</h2>
+        <h2 id="works-title" class="section-title">{l(site.worksHeading, locale)}</h2>
         <ul class="works">
           {games.map((g) => (
             <GameCard game={g} locale={locale} />
