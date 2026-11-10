@@ -1,0 +1,194 @@
+---
+/**
+ * ❤️ + quick stamps for one game. Buttons start hidden and appear only when the
+ * reaction API answers (so a deploy without the database shows nothing).
+ * Counts appear once a button reaches `reactions.showCountFrom`.
+ */
+import type { Game, Locale } from '../config/types';
+import { reactions } from '../config/reactions';
+import { l } from '../i18n/ui';
+
+interface Props {
+  game: Game;
+  locale: Locale;
+  compact?: boolean;
+}
+const { game, locale, compact = false } = Astro.props;
+const ja = locale === 'ja';
+const appId = game.appStore?.url?.match(/id(\d+)/)?.[1];
+const reviewUrl = appId ? `https://apps.apple.com/app/id${appId}?action=write-review` : null;
+---
+
+{
+  reactions.enabled && (
+    <div
+      class:list={['reactions', { 'reactions--compact': compact }]}
+      data-reactions={game.id}
+      data-show-from={reactions.showCountFrom}
+      hidden
+    >
+      {!compact && <p class="reactions__prompt">{ja ? 'この作品に反応する' : 'React to this game'}</p>}
+      <ul class="reactions__list">
+        {reactions.items.map((r) => (
+          <li>
+            <button type="button" class="reaction" data-reaction={r.id} aria-pressed="false">
+              <span class="reaction__emoji" aria-hidden="true">{r.emoji}</span>
+              <span class="reaction__label">{l(r.label, locale)}</span>
+              <span class="reaction__count" data-count hidden />
+            </button>
+          </li>
+        ))}
+      </ul>
+      <p class="reactions__thanks" data-thanks hidden>
+        {ja ? 'ありがとうございます！' : 'Thank you!'}
+        {reviewUrl && (
+          <>
+            {' '}
+            <a href={reviewUrl} target="_blank" rel="noopener" data-track={`click_${game.id.replace(/-/g, '')}_review`} data-track-location="reactions">
+              {ja ? 'App Storeでレビューを書く' : 'Write a review on the App Store'}
+            </a>
+            {ja ? 'と、もっと多くの人に届きます。' : ' — it helps more players find it.'}
+          </>
+        )}
+      </p>
+    </div>
+  )
+}
+
+<script>
+  type Counts = Record<string, Record<string, number>>;
+  const roots = [...document.querySelectorAll<HTMLElement>('[data-reactions]')];
+  const KEY = 'kg_reacted';
+  const load = (): Record<string, true> => {
+    try {
+      return JSON.parse(localStorage.getItem(KEY) ?? '{}');
+    } catch {
+      return {};
+    }
+  };
+  const save = (v: Record<string, true>) => {
+    try {
+      localStorage.setItem(KEY, JSON.stringify(v));
+    } catch {}
+  };
+
+  const paint = (root: HTMLElement, counts: Record<string, number>) => {
+    const from = Number(root.dataset.showFrom ?? 10);
+    for (const btn of root.querySelectorAll<HTMLButtonElement>('[data-reaction]')) {
+      const n = counts[btn.dataset.reaction!] ?? 0;
+      const el = btn.querySelector<HTMLElement>('[data-count]')!;
+      el.textContent = String(n);
+      el.hidden = n < from;
+    }
+  };
+
+  if (roots.length) {
+    fetch('/api/reactions')
+      .then((r) => (r.ok ? r.json() : Promise.reject()))
+      .then(({ counts }: { counts: Counts }) => {
+        const done = load();
+        for (const root of roots) {
+          const game = root.dataset.reactions!;
+          paint(root, counts[game] ?? {});
+          for (const btn of root.querySelectorAll<HTMLButtonElement>('[data-reaction]')) {
+            const key = `${game}:${btn.dataset.reaction}`;
+            if (done[key]) btn.setAttribute('aria-pressed', 'true');
+            btn.addEventListener('click', async () => {
+              if (btn.getAttribute('aria-pressed') === 'true') return;
+              btn.setAttribute('aria-pressed', 'true');
+              const mine = load();
+              mine[key] = true;
+              save(mine);
+              root.querySelector<HTMLElement>('[data-thanks]')!.hidden = false;
+              window.kgTrack?.(`click_reaction_${btn.dataset.reaction}`, { game });
+              try {
+                const res = await fetch('/api/reactions', {
+                  method: 'POST',
+                  headers: { 'Content-Type': 'application/json' },
+                  body: JSON.stringify({ game, reaction: btn.dataset.reaction }),
+                });
+                if (res.ok) paint(root, (await res.json()).counts ?? {});
+              } catch {}
+            });
+          }
+          root.hidden = false;
+        }
+      })
+      .catch(() => {});
+  }
+</script>
+
+<style>
+  .reactions {
+    margin-top: 1rem;
+  }
+  .reactions__prompt {
+    margin: 0 0 0.5rem;
+    font-size: 0.85rem;
+    font-weight: 700;
+    color: var(--c-muted);
+  }
+  .reactions__list {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.5rem;
+  }
+  .reaction {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.35rem;
+    min-height: 40px;
+    padding: 0 0.8rem;
+    border: 1.5px solid var(--c-line);
+    border-radius: 999px;
+    background: transparent;
+    color: var(--c-ink);
+    font: inherit;
+    font-size: 0.88rem;
+    font-weight: 700;
+    cursor: pointer;
+    transition: transform 0.12s ease, border-color 0.12s ease, background-color 0.12s ease;
+    -webkit-tap-highlight-color: transparent;
+  }
+  .reaction:hover {
+    border-color: var(--c-muted);
+  }
+  .reaction:active {
+    transform: scale(0.96);
+  }
+  .reaction[aria-pressed='true'] {
+    border-color: var(--c-accent);
+    background: rgb(142 107 216 / 0.18);
+    cursor: default;
+  }
+  .reaction[aria-pressed='true'] .reaction__emoji {
+    animation: pop 0.35s ease;
+  }
+  .reaction__count {
+    font-variant-numeric: tabular-nums;
+    color: var(--c-muted);
+  }
+  .reactions__thanks {
+    margin: 0.6rem 0 0;
+    font-size: 0.85rem;
+    color: var(--c-muted);
+  }
+  .reactions--compact .reaction {
+    min-height: 36px;
+    padding: 0 0.65rem;
+    font-size: 0.8rem;
+  }
+  @keyframes pop {
+    50% {
+      transform: scale(1.35);
+    }
+  }
+  @media (prefers-reduced-motion: reduce) {
+    .reaction[aria-pressed='true'] .reaction__emoji {
+      animation: none;
+    }
+  }
+</style>

@@ -4,3 +4,7 @@ dist/
 .env
 .env.*
 !.env.example
+
+# local Cloudflare dev state
+.wrangler/
+wrangler.toml

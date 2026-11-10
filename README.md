@@ -89,6 +89,8 @@ It also renders `public/apple-touch-icon.png` and `public/favicon-32.png` from
 | `click_synapse_appstore` | シナプス App Store button |
 | `click_flipshot_appstore` | フリップショット App Store button |
 | `click_x_profile` | any X link (`location` = header / about / footer) |
+| `click_reaction_<id>` | a reaction button (`game`) |
+| `click_<game>_review` | "Write a review" link shown after a reaction |
 | `language_switch` | EN/JP switch (`from`, `to`) |
 
 Every event carries: `lang`, `path`, `traffic_source`, and any `utm_*` present on
@@ -153,6 +155,35 @@ Open any page with `?kg_debug=1` (persists for the tab) and watch the console:
 
 `window.kgEvents` holds every event with `sent: true|false`. With a provider
 enabled, also check its realtime view (Plausible dashboard / GA4 DebugView).
+
+## Reactions (❤️ + stamps)
+
+Every game shows reaction buttons (❤️ いいね, やってみたい, 面白そう, 遊んだよ, 続編希望).
+Buttons and labels live in `src/config/reactions.ts`; counts appear only once a button
+reaches `showCountFrom` (default 10). After a press the visitor is offered a link to
+write an App Store review.
+
+Storage is a Cloudflare D1 database used by `functions/api/reactions.ts` (a Pages
+Function). **Until the database is bound the buttons stay hidden**, so deploying the
+code alone changes nothing.
+
+One-time setup (Cloudflare dashboard):
+
+1. Storage & databases → D1 → **Create database**, name e.g. `katapote-reactions`.
+2. Open it → **Console**, paste the contents of `migrations/0001_reactions.sql`, run.
+3. Workers & Pages → the Pages project → Settings → **Bindings** → Add → D1 database:
+   variable name `DB`, database = the one above. Save.
+4. Deployments → latest → **Retry deployment**.
+
+Abuse limits: one press per visitor per game per button (visitor = salted SHA-256 of
+the IP; the IP is not stored) and 40 presses per visitor per day. The Privacy Policy
+section about this is shown while `reactions.enabled` is true.
+
+Local test: create a temporary `wrangler.toml` with `pages_build_output_dir = "dist"`
+and a `[[d1_databases]]` binding `DB`, run
+`npx wrangler d1 execute <name> --local --file migrations/0001_reactions.sql`, then
+`npm run build && npx wrangler pages dev`. Don't commit `wrangler.toml`: Cloudflare
+would use it instead of the dashboard settings.
 
 ## Deploy to Cloudflare Pages
 

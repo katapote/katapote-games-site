@@ -7,6 +7,7 @@ import Hero from './Hero.astro';
 import Features from './Features.astro';
 import Works from './Works.astro';
 import About from './About.astro';
+import Reactions from './Reactions.astro';
 
 interface Props {
   locale: Locale;
@@ -38,11 +39,22 @@ const appStore = featuredGame.appStore?.url ? featuredGame.appStore : null;
       </div>
     )
   }
+  <div class="container featured-reactions">
+    <Reactions game={featuredGame} locale={locale} />
+  </div>
   <Works games={otherGames} locale={locale} />
   <About locale={locale} />
 </Base>
 
 <style>
+  .featured-reactions {
+    display: flex;
+    justify-content: center;
+    text-align: center;
+  }
+  .featured-reactions :global(.reactions__list) {
+    justify-content: center;
+  }
   .repeat-cta {
     display: flex;
     flex-wrap: wrap;

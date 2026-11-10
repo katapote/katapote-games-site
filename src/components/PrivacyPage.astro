@@ -7,6 +7,7 @@
 import type { Locale } from '../config/types';
 import { activeSocials, site } from '../config/site';
 import { analyticsInUse as a } from '../config/analytics';
+import { reactions } from '../config/reactions';
 import { l, useT } from '../i18n/ui';
 import Base from '../layouts/Base.astro';
 
@@ -83,7 +84,16 @@ const updated = '2026-11-01';
               {site.contactUrl ? <a href={site.contactUrl}>お問い合わせ</a> : x ? <>本ポリシーに関するお問い合わせは、<a href={x.url} rel="noopener" target="_blank">X（{site.xHandle}）</a>までご連絡ください。</> : null}
             </p>
 
-            <h2>8. 改定</h2>
+            {reactions.enabled && (
+              <>
+                <h2>8. 反応ボタン（いいね・スタンプ）</h2>
+                <p>
+                  各作品の反応ボタンが押されたときは、作品・ボタンの種類と押された日時を保存します。同じ方による重複を防ぐため、IPアドレスを元に復元できない形（ソルト付きハッシュ）に変換した値を保存します。IPアドレスそのものは保存しません。押したボタンの記録は、お使いのブラウザ（localStorage）にも保存されます。
+                </p>
+              </>
+            )}
+
+            <h2>{reactions.enabled ? '9' : '8'}. 改定</h2>
             <p>本ポリシーは必要に応じて改定し、本ページに掲載した時点で効力を生じます。</p>
             <p>最終更新日：{updated}</p>
           </>
@@ -139,7 +149,16 @@ const updated = '2026-11-01';
               {site.contactUrl ? <a href={site.contactUrl}>Contact us</a> : x ? <>For questions about this policy, reach out on <a href={x.url} rel="noopener" target="_blank">X ({site.xHandle})</a>.</> : null}
             </p>
 
-            <h2>8. Changes</h2>
+            {reactions.enabled && (
+              <>
+                <h2>8. Reaction buttons</h2>
+                <p>
+                  When you press a reaction button, we store the game, the button and the time. To prevent duplicate presses we also store a salted, one-way hash derived from your IP address; the IP address itself is not stored. Your pressed buttons are also remembered in your browser (localStorage).
+                </p>
+              </>
+            )}
+
+            <h2>{reactions.enabled ? '9' : '8'}. Changes</h2>
             <p>We may update this policy. Changes take effect when posted on this page.</p>
             <p>Last updated: {updated}</p>
           </>
