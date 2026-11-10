@@ -78,7 +78,7 @@ export const games: Game[] = [
   },
   {
     id: 'omoidase',
-    order: 2,
+    order: 4,
     status: 'available',
     title: { en: 'Omoidase' },
     tagline: {
@@ -93,7 +93,7 @@ export const games: Game[] = [
   },
   {
     id: 'bou-no-ichizoku',
-    order: 3,
+    order: 2,
     status: 'available',
     title: { en: 'Bou no Ichizoku', ja: 'ぼうの一族' },
     tagline: {
@@ -113,7 +113,7 @@ export const games: Game[] = [
   },
   {
     id: 'synapse',
-    order: 4,
+    order: 3,
     status: 'available',
     title: { en: 'Synapse', ja: 'シナプス' },
     tagline: {
