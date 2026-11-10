@@ -13,7 +13,7 @@ export const games: Game[] = [
     id: 'doodle-nightmare',
     featured: true,
     order: 1,
-    status: 'playtest',
+    status: 'available',
     title: { en: 'Doodle Nightmare', ja: 'らくがきナイトメア' },
     tagline: {
       en: 'A hand-drawn nightmare FPS.',
@@ -33,6 +33,10 @@ export const games: Game[] = [
       ja: 'らくがきナイトメア のタイトル画面',
     },
     icon: 'doodle-nightmare/icon.png',
+    appStore: {
+      url: 'https://apps.apple.com/app/id6823218981',
+      event: 'click_doodle_appstore',
+    },
     testFlight: {
       url: 'https://testflight.apple.com/join/TnMhNcF6',
       event: 'click_doodle_testflight',
@@ -97,6 +101,11 @@ export const games: Game[] = [
       ja: '棒人間の放置育成RPG。',
     },
     icon: 'bou-no-ichizoku/icon.png',
+    preview: {
+      image: 'bou-no-ichizoku/preview.png',
+      video: '/media/bou-no-ichizoku/preview.mp4',
+      fit: 'contain',
+    },
     appStore: {
       url: 'https://apps.apple.com/app/id6818558498',
       event: 'click_bou_appstore',
@@ -112,6 +121,10 @@ export const games: Game[] = [
       ja: '属性シナジー弾幕ローグライト。',
     },
     icon: 'synapse/icon.png',
+    preview: {
+      image: 'synapse/preview.png',
+      video: '/media/synapse/preview.mp4',
+    },
     appStore: {
       url: 'https://apps.apple.com/app/id6791659740',
       event: 'click_synapse_appstore',

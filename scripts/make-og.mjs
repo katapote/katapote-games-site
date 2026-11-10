@@ -31,10 +31,10 @@ const esc = (s) => s.replace(/&/g, '&amp;').replace(/</g, '&lt;');
 const title = game.title.en;
 const line = game.catchcopy?.en ?? game.tagline?.en ?? '';
 const brand = `${site.brand.wordmark}${site.brand.wordmarkThin}`.toUpperCase();
-const cta = game.testFlight?.url
-  ? 'Join the Playtest on TestFlight'
-  : game.appStore?.url
-    ? 'Available on the App Store'
+const cta = game.appStore?.url
+  ? 'Download on the App Store'
+  : game.testFlight?.url
+    ? 'Join the Playtest on TestFlight'
     : '';
 
 const textLayer = (withArt) => Buffer.from(`

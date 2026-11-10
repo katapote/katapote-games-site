@@ -47,4 +47,12 @@ export interface Game {
   keyVisualAlt?: Localized;
   gameplayVideo?: StoreLink;
   features?: Feature[];
+  /** Optional preview shown on the card in "other games". `image` is under src/assets/games/, `video` under public/.
+   *  On mouse devices the clip plays on hover; on touch devices while on screen. */
+  preview?: {
+    image: string;
+    video?: string;
+    /** 'contain' for portrait clips (shown whole on a dark background). Default 'cover'. */
+    fit?: 'cover' | 'contain';
+  };
 }

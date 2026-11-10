@@ -20,6 +20,11 @@ interface Props {
   variant?: 'frame' | 'icon';
   /** Muted looping clip (public path). Plays over the image while on screen; skipped with reduced motion. */
   video?: string;
+  /** 'visible' (default): play while on screen. 'hover': on mouse devices play only while the pointer is over
+   *  the closest `[data-hover-root]` (or this box); on touch devices fall back to 'visible'. */
+  playOn?: 'visible' | 'hover';
+  /** 'cover' (default) crops to fill the box; 'contain' shows the whole frame (e.g. portrait clips). */
+  fit?: 'cover' | 'contain';
 }
 
 const {
@@ -33,6 +38,8 @@ const {
   class: className,
   variant = 'frame',
   video,
+  playOn = 'visible',
+  fit = 'cover',
 } = Astro.props;
 const image = gameImage(src);
 // Never upscale: keep requested widths smaller than the source, plus the source width.
@@ -42,7 +49,7 @@ if (src && !image && import.meta.env.DEV) {
 }
 ---
 
-<div class:list={['media', `media--${variant}`, className, { 'media--empty': !image }]} style={`aspect-ratio: ${ratio}`}>
+<div class:list={['media', `media--${variant}`, `media--${fit}`, className, { 'media--empty': !image }]} style={`aspect-ratio: ${ratio}`}>
   {
     image ? (
       <Picture
@@ -67,29 +74,49 @@ if (src && !image && import.meta.env.DEV) {
       </div>
     )
   }
-  {video && <video class="media__video" data-src={video} muted loop playsinline preload="none" aria-hidden="true" tabindex="-1" />}
+  {video && <video class="media__video" data-src={video} data-play-on={playOn} muted loop playsinline preload="none" aria-hidden="true" tabindex="-1" />}
 </div>
 
 <script>
-  // Load/play clips only while visible; never with reduced motion. Without JS the poster image stays.
-  const clips = document.querySelectorAll<HTMLVideoElement>('video.media__video');
+  // Clips load lazily and never play with reduced motion. Without JS the poster image stays.
+  //  - data-play-on="visible": play while on screen.
+  //  - data-play-on="hover": on mouse devices play while hovered/focused; on touch devices same as "visible".
+  const clips = [...document.querySelectorAll<HTMLVideoElement>('video.media__video')];
   const reduce = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
-  if (clips.length && !reduce && 'IntersectionObserver' in window) {
-    const io = new IntersectionObserver(
-      (entries) => {
-        for (const e of entries) {
-          const v = e.target as HTMLVideoElement;
-          if (e.isIntersecting) {
-            if (!v.src) v.src = v.dataset.src ?? '';
-            v.play().then(() => v.classList.add('is-playing')).catch(() => {});
-          } else {
-            v.pause();
+  const canHover = window.matchMedia('(hover: hover) and (pointer: fine)').matches;
+  const start = (v: HTMLVideoElement) => {
+    if (!v.src) v.src = v.dataset.src ?? '';
+    v.play().then(() => v.classList.add('is-playing')).catch(() => {});
+  };
+  if (clips.length && !reduce) {
+    const hoverClips = canHover ? clips.filter((v) => v.dataset.playOn === 'hover') : [];
+    const visibleClips = clips.filter((v) => !hoverClips.includes(v));
+    for (const v of hoverClips) {
+      const root = v.closest<HTMLElement>('[data-hover-root]') ?? v.parentElement!;
+      const stop = () => {
+        v.pause();
+        v.classList.remove('is-playing');
+      };
+      root.addEventListener('pointerenter', () => start(v));
+      root.addEventListener('pointerleave', stop);
+      root.addEventListener('focusin', () => start(v));
+      root.addEventListener('focusout', (e) => {
+        if (!root.contains(e.relatedTarget as Node | null)) stop();
+      });
+    }
+    if (visibleClips.length && 'IntersectionObserver' in window) {
+      const io = new IntersectionObserver(
+        (entries) => {
+          for (const e of entries) {
+            const v = e.target as HTMLVideoElement;
+            if (e.isIntersecting) start(v);
+            else v.pause();
           }
-        }
-      },
-      { rootMargin: '200px 0px' },
-    );
-    clips.forEach((v) => io.observe(v));
+        },
+        { rootMargin: '200px 0px' },
+      );
+      visibleClips.forEach((v) => io.observe(v));
+    }
   }
 </script>
 
@@ -114,6 +141,13 @@ if (src && !image && import.meta.env.DEV) {
     width: 100%;
     height: 100%;
     object-fit: cover;
+  }
+  .media--contain {
+    background: #000;
+  }
+  .media--contain :global(img),
+  .media--contain .media__video {
+    object-fit: contain;
   }
   .media__video {
     position: absolute;

@@ -15,7 +15,23 @@ const link = game.appStore?.url ? game.appStore : game.testFlight?.url ? game.te
 const linkLabel = game.appStore?.url ? t('cta.appstore') : t('cta.playtest');
 ---
 
-<li class="card" id={game.id}>
+<li class:list={['card', { 'card--preview': game.preview }]} id={game.id} data-hover-root>
+  {
+    game.preview && (
+      <Media
+        class="card__preview"
+        src={game.preview.image}
+        alt=""
+        ratio="16 / 9"
+        widths={[480, 800]}
+        sizes="(min-width: 760px) 520px, 100vw"
+        placeholderLabel={t('placeholder.image')}
+        video={game.preview.video}
+        playOn="hover"
+        fit={game.preview.fit}
+      />
+    )
+  }
   <Media
     class="card__icon"
     variant="icon"
@@ -59,6 +75,9 @@ const linkLabel = game.appStore?.url ? t('cta.appstore') : t('cta.playtest');
   }
   .card :global(.card__icon) {
     width: 72px;
+  }
+  .card :global(.card__preview) {
+    grid-column: 1 / -1;
   }
   .card__title {
     margin: 0;
