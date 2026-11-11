@@ -16,8 +16,8 @@ export default defineConfig({
   integrations: [
     sitemap({
       i18n: {
-        defaultLocale: 'en',
-        locales: { en: 'en', ja: 'ja' },
+        defaultLocale: 'ja',
+        locales: { ja: 'ja', en: 'en' },
       },
       filter: (page) => !page.includes('/404'),
     }),

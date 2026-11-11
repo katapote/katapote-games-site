@@ -1,7 +1,7 @@
 import type { Locale, Localized, GameStatus } from '../config/types';
 
-export const locales: Locale[] = ['en', 'ja'];
-export const defaultLocale: Locale = 'en';
+export const locales: Locale[] = ['ja', 'en'];
+export const defaultLocale: Locale = 'ja';
 
 export const ui = {
   en: {
@@ -71,7 +71,7 @@ export function statusLabel(status: GameStatus, locale: Locale) {
   return useT(locale)(`status.${status}` as UiKey);
 }
 
-/** '/privacy/' → '/ja/privacy/' etc. `path` is the locale-neutral path. */
+/** '/privacy/' → '/en/privacy/' etc. (Japanese is the default and has no prefix.) `path` is the locale-neutral path. */
 export function localePath(locale: Locale, path = '/'): string {
   const clean = path.startsWith('/') ? path : `/${path}`;
   return locale === defaultLocale ? clean : `/${locale}${clean}`;

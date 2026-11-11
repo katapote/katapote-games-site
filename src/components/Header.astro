@@ -11,7 +11,7 @@ interface Props {
 const { locale, path } = Astro.props;
 const t = useT(locale);
 const headerSocials = activeSocials.filter((s) => s.inHeader);
-const langs: Locale[] = ['en', 'ja'];
+const langs: Locale[] = ['ja', 'en'];
 ---
 
 <header class="site-header">

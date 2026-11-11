@@ -18,7 +18,7 @@ const testFlight = featuredGame.testFlight?.url ? featuredGame.testFlight : null
 const appStore = featuredGame.appStore?.url ? featuredGame.appStore : null;
 ---
 
-<Base locale={locale} path="/" autoLanguage={locale === 'en'}>
+<Base locale={locale} path="/" autoLanguage={locale === 'ja'}>
   <Hero game={featuredGame} locale={locale} />
   <Features features={featuredGame.features ?? []} locale={locale} />
   {

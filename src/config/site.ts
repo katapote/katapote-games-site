@@ -25,12 +25,12 @@ export const site = {
     ja: 'このページは悪夢の中に消えてしまいました。',
   } satisfies Localized,
   defaultTitle: {
-    en: 'Katapote Games — Doodle Nightmare & indie apps',
-    ja: 'Katapote Games — Doodle Nightmare と個人開発アプリ',
+    en: 'Katapote Games — Bou no Ichizoku & indie games',
+    ja: 'Katapote Games — ぼうの一族 と個人開発ゲーム',
   } satisfies Localized,
   description: {
-    en: 'Indie games and apps by solo developer Katapote. Join the Doodle Nightmare playtest — a hand-drawn nightmare FPS where the weapons you draw shape how you fight.',
-    ja: '個人開発者かたぽてのゲームとアプリ。描いた武器で戦い方が変わる手描きの悪夢FPS「Doodle Nightmare」のプレイテスト参加者を募集中。',
+    en: 'Indie games and apps by solo developer Katapote. Bou no Ichizoku is a stick-figure idle RPG where how you play decides which of 11 forms your hero becomes.',
+    ja: '個人開発者かたぽてのゲームとアプリ。「ぼうの一族」は、遊び方で11の姿に進化する棒人間の放置育成RPG。転生と分身で一族をつなぐ。',
   } satisfies Localized,
   /** Path under /public. Regenerate from game art with `npm run og`. */
   ogImage: '/og/og-default.png',

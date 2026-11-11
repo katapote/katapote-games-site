@@ -1,8 +1,12 @@
 # Katapote Games — website
 
-Portfolio & conversion site for Katapote Games. Primary goal: send visitors from X
-to the **Doodle Nightmare TestFlight playtest**; secondary: App Store clicks for
-Omoidase and ぼうの一族.
+Portfolio & conversion site for Katapote Games. Primary goal (since 2026-11-11):
+App Store downloads of **ぼうの一族** (the featured game); the other titles follow as cards.
+Japanese is the default locale (`/`); English lives under `/en/`. Old `/ja/` URLs are
+301-redirected by `public/_redirects`.
+
+Note: `public/og/og-default.png` is currently a hand-made Japanese card (icon, title and two
+store screenshots). `npm run og` would overwrite it with the generic English card.
 
 Astro (static) + TypeScript + plain CSS. No UI framework; the only client JS is a
 ~2 KB analytics helper and a one-line language redirect.

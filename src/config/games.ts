@@ -11,8 +11,7 @@ import type { Game } from './types';
 export const games: Game[] = [
   {
     id: 'doodle-nightmare',
-    featured: true,
-    order: 1,
+    order: 2,
     status: 'available',
     title: { en: 'Doodle Nightmare', ja: 'らくがきナイトメア' },
     tagline: {
@@ -33,6 +32,10 @@ export const games: Game[] = [
       ja: 'らくがきナイトメア のタイトル画面',
     },
     icon: 'doodle-nightmare/icon.png',
+    preview: {
+      image: 'doodle-nightmare/key-visual.png',
+      video: '/media/doodle-nightmare/feature-fight.mp4',
+    },
     appStore: {
       url: 'https://apps.apple.com/app/id6823218981',
       event: 'click_doodle_appstore',
@@ -93,13 +96,56 @@ export const games: Game[] = [
   },
   {
     id: 'bou-no-ichizoku',
-    order: 2,
+    featured: true,
+    order: 1,
     status: 'available',
     title: { en: 'Bou no Ichizoku', ja: 'ぼうの一族' },
     tagline: {
       en: 'A stick-figure idle RPG.',
       ja: '棒人間の放置育成RPG。',
     },
+    catchcopy: {
+      en: 'How you play shapes who your stick figure becomes.',
+      ja: 'あなたの生活が、ボウの姿になる。',
+    },
+    description: {
+      en: 'A stick-figure idle RPG. When and how you play decides which of 11 forms your Bou evolves into. Rebirth and clones carry your clan forward — and it keeps growing while the app is closed. (Japanese only)',
+      ja: '遊ぶ時間帯や遊び方で、11の姿に進化する棒人間の放置育成RPG。転生と分身で一族をつなぎ、閉じている間も育ち続ける。',
+    },
+    keyVisual: 'bou-no-ichizoku/key-visual.jpg',
+    keyVisualAlt: {
+      en: 'Bou no Ichizoku App Store screenshots',
+      ja: 'ぼうの一族 の画面',
+    },
+    features: [
+      {
+        title: { en: '11 forms, decided by how you play', ja: '遊び方で、11の姿に' },
+        body: {
+          en: 'Morning or night, training or battle — your habits decide the evolution.',
+          ja: '朝に遊ぶか夜に遊ぶか、修行か戦いか。あなたの遊び方で進化が決まる。',
+        },
+        image: 'bou-no-ichizoku/feature-evolve.jpg',
+        imageAlt: { en: 'Evolution screens', ja: '進化の画面' },
+      },
+      {
+        title: { en: 'Rebirth and clones', ja: '転生と分身で、一族が強くなる' },
+        body: {
+          en: 'Power and skills pass to the next life. One day, a clone may surpass you.',
+          ja: '転生すると力と技が次の命へ。一緒に戦う分身は、いつか自分を超える。',
+        },
+        image: 'bou-no-ichizoku/feature-lineage.jpg',
+        imageAlt: { en: 'Family tree and clone screens', ja: '系譜と分身の画面' },
+      },
+      {
+        title: { en: 'Grows while closed', ja: '閉じていても、育っている' },
+        body: {
+          en: 'Training continues while you are away. Master duels are won by your own timing.',
+          ja: '修行も戦いも、放置のあいだに進む。師範戦だけは、自分の手で見切る。',
+        },
+        image: 'bou-no-ichizoku/feature-idle.jpg',
+        imageAlt: { en: 'Idle rewards and master duel screens', ja: '放置の報酬と師範戦の画面' },
+      },
+    ],
     icon: 'bou-no-ichizoku/icon.png',
     preview: {
       image: 'bou-no-ichizoku/preview.png',

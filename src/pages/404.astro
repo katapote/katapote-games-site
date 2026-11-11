@@ -2,14 +2,14 @@
 import Base from '../layouts/Base.astro';
 import { site } from '../config/site';
 import { l, useT } from '../i18n/ui';
-const t = useT('en');
+const t = useT('ja');
 ---
 
-<Base locale="en" path="/" title={t('notfound.title')} noindex>
+<Base locale="ja" path="/" title={t('notfound.title')} noindex>
   <section class="section">
     <div class="container prose">
       <h1>{t('notfound.title')}</h1>
-      <p>{l(site.notFoundBody, 'en')}</p>
+      <p>{l(site.notFoundBody, 'ja')}</p>
       <p><a class="btn btn--small" href="/">{t('notfound.back')}</a></p>
     </div>
   </section>

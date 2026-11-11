@@ -14,7 +14,7 @@ interface Props {
   title?: string;
   description?: string;
   noindex?: boolean;
-  /** Only the English home page redirects Japanese browsers to /ja/. */
+  /** Only the Japanese (default) home page: send visitors who picked EN before to /en/. */
   autoLanguage?: boolean;
 }
 
@@ -70,14 +70,12 @@ const ga4Id = import.meta.env.PUBLIC_GA4_ID;
     {
       autoLanguage && (
         <script is:inline>
-          // First visit only: send Japanese-language browsers to /ja/. An explicit
-          // choice made with the EN/JP switch (stored in localStorage) always wins.
+          // Japanese is the default. Only a visitor who chose EN with the switch
+          // before (stored in localStorage) is sent to /en/.
           (function () {
             try {
-              var saved = localStorage.getItem('kg_lang');
-              var langs = navigator.languages || [navigator.language || ''];
-              if (!saved && /^ja\b/i.test(langs[0] || '')) {
-                location.replace('/ja/' + location.search + location.hash);
+              if (localStorage.getItem('kg_lang') === 'en') {
+                location.replace('/en/' + location.search + location.hash);
               }
             } catch (e) {}
           })();
